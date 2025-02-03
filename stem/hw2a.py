@@ -17,13 +17,22 @@ def main():
     :return: Nothing to return, just print results to screen.
     """
     #region testing user input
+    print("\nGaussian Probability Calculation\n")
     # The following code solicites user input through the CLI.
-    mean = input("Population mean? ")
-    stDev = input("Standard deviation?")
-    c = input("c value?")
+    mean = float(input("Population mean?: "))
+    stDev = float(input("Standard deviation?:"))
+    c = float(input("c value?:"))
+    #get probability direction
     GT = True if input("Probability greater than c?").lower() in ["y","yes","true"] else "False"
-    print("P(x"+(">" if GT else "<") + c +"|"+mean+", "+stDev +")")
-    #endregion
+    #calculate probability
+    args = (mean, stDev)
+    P = Probability (GPDF, args, c, GT)
+
+    if GT:
+        print (f"P(x<{c:.2f} | N ({mean: .2f}, {stDev: .2f}))= {P:.4f}")
+    else:
+        print (f"P(x>{c:.2f} | N ({mean: .2f}, {stDev:.2f}))= {P:.4f}")
+      #endregion
 #endregion
 
 if __name__ == "__main__":
