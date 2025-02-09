@@ -283,7 +283,7 @@ def main():
     for r in B:
         print(r)
 # endregion
-
+#GAUSSSEIDEL
 # this calls the main function if it is run as '__main__'
 if __name__ == "__main__":
     main()

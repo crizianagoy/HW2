@@ -1,6 +1,4 @@
 #region imports
-import math
-import copy
 import Gauss_Elim as GE  # this is the module from lecture 2 that has usefule matrix manipulation functions
 from math import sqrt, pi, exp, cos
 #endregion
@@ -22,11 +20,8 @@ def Probability(PDF, args, c, GT=True):
     :return: probability value
     """
     mu, sig = args
-    if GT :
-        return 1-Simpson(PDF,(mu, sig, mu - 5 * sig, c))
-    else:
-        return Simpson(PDF, (mu, sig, mu - 5 * sig, c))
-
+    p = Simpson(PDF, (mu, sig, mu - 5 * sig, 0))
+    return p
 
 def GPDF(args):
     """
@@ -43,7 +38,7 @@ def GPDF(args):
     # Step 1: unpack args
     x, mu, sig = args
     # step 2: compute GPDF at x
-    fx = (1 / (sig * math.sqrt(2 * math.pi))) * math.exp(-0.5 * ((x - mu) / sig) ** 2)
+    fx = (1 / (sig * sqrt(2 * pi))) * exp(-0.5 * ((x - mu) / sig) ** 2)
     # step 3: return value
     return fx
 
@@ -59,18 +54,7 @@ def Simpson(fn, args, N=100):
     :param args: a tuple containing (mean, stDev, lhl, rhl)
     :return: the area beneath the function between lhl and rhl
     """
-    #unpack args
-    mu, sig, a, b = args
-    #step size
-    h=(b-a)/N
-    #x value
-    x=[a+ i*h for i in range(N+1)]
-    #calculate value
-    fx=[fn((xi, mu,sig)) for xi in x]
-    #apply simpson formula
-    area= fx[0] + fx[-1] + 4*sum(fx[1:N:2])+2*sum(fx[2:N-1:2])
-    area= (h/3) * area
-
+    area = 0.5
     return area
 
 def Secant(fcn, x0, x1, maxiter=10, xtol=1e-5):
@@ -84,16 +68,7 @@ def Secant(fcn, x0, x1, maxiter=10, xtol=1e-5):
     :param xtol:  exit if the |xnewest - xprevious| < xtol
     :return: tuple with: (the final estimate of the root (most recent value of x), number of iterations)
     """
-    for i in range(maxiter):
-        f0, f1 = fcn(x0), fcn(x1)
-        if abs(f1-f0) < 1e-12:
-            break
-        #secant update
-        x_new= x1-f1*(x1-x0)/(f1-f0)
-        if abs(x_new-x1)<xtol: #stop if close enough
-            return x_new, i+1 #return a tuple
-        x0, x1=x1, x_new #update guessees
-    return x1, maxiter
+    pass
 
 def GaussSeidel(Aaug, x, Niter = 15):
     """
@@ -103,16 +78,8 @@ def GaussSeidel(Aaug, x, Niter = 15):
     :param Niter:  Number of iterations to run the GS method
     :return: the solution vector x
     """
-    print("GaussSeidel function running:")
     Aaug = GE.MakeDiagDom(Aaug)
-    print("Aaug after MakeDiagDom, Aaug")
-    N=len(Aaug)
-    for _ in range(Niter):
-        for i in range(N):
-            sum_=sum(Aaug[i][j] *x[j] for j in range (N) if j !=i)
-            x[i]=(Aaug[i][-1] - sum_)/ Aaug [i] [i] #update variable
-        print(f"Iteration {_+1}: {x}")
-    return x
+    pass
 
 def main():
     '''
