@@ -3,7 +3,7 @@
     # the elementary operations for Gauss elimination are
     # 1. Swap the positions of two rows (I'll use pop and insert)
     # 2. Multiply a row by a non-zero scalar
-    # 3. Add to one row, a scalar multiple of another row #
+    # 3. Add to one row, a scalar multiple of another row
 # endregion
 
 # region imports
@@ -29,14 +29,14 @@ def MakeDiagDom(A):
     :param A: The matrix to sort
     :return: The sorted matrix
     """
-    n = len(A)
+    n=len(A)
     for i in range(n):
-        # find max abs value row
-        max_row = max(range(i, n), key=lambda r: abs(A[r][i]))
-        if abs(A[max_row][i]) < sum([abs(A[max_row][j]) for j in range(n) if j != i]):
+        #find max abs value row
+        max_row=max(range(i,n), key=lambda r: abs(A[r][i]))
+        if abs(A[max_row][i])<sum([abs(A[max_row][j]) for j in range(n) if j !=i]):
             print(f"warning: Row {max_row} doen't ensure diagonal dominance")
         if max_row !=i:
-            A[i], A[max_row] = A[max_row], A[i]
+            A[i], A[max_row]=A[max_row], A[i]
     return A
 
 # region row operations
@@ -271,7 +271,7 @@ def main():
     #for solving [A][x]=[b]
     A=popColumn(M, len(M[0]) - 1) #remove last column of augmented matrix M
 
-    MI= InvertMatrix (A)
+    MI=InvertMatrix(A)
 
     print("Inverted Matrix")
     for r in MI:
@@ -283,7 +283,7 @@ def main():
     for r in B:
         print(r)
 # endregion
-#GAUSSSEIDEL
+
 # this calls the main function if it is run as '__main__'
 if __name__ == "__main__":
     main()

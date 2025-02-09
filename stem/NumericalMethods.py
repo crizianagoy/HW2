@@ -1,61 +1,6 @@
-#region imports #
-import Gauss_Elim as GE  # this is the module from lecture 2 that has usefule matrix manipulation functions
-from math import sqrt, pi, exp, cos
-#endregion
+from copy import deepcopy
 
-#region function definitions
-def Probability(PDF, args, c, GT=True):
-    """
-    This is the function to calculate the probability that x is >c or <c depending
-    on the GT boolean.
-    Step 1:  unpack args into mu and stDev
-    Step 2:  compute lhl and rhl for Simpson
-    Step 3:  package new tuple args1=(mu, stDev, lhl, rhl) to be passed to Simpson
-    Step 4:  call Simpson with GNPDF and args1
-    Step 5:  return probability
-    :param PDF: the probability density function to be integrated
-    :param args: a tuple with (mean, standard deviation)
-    :param c: value for which we ask the probability question
-    :param GT: boolean deciding if we want probability x>c (True) or x<c (False)
-    :return: probability value
-    """
-    mu, sig = args
-    p = Simpson(PDF, (mu, sig, mu - 5 * sig, 0))
-    return p
-
-def GPDF(args):
-    """
-    Here is where I will define the Gaussian probability density function.
-    This requires knowing the population mean and standard deviation.
-    To compute the GPDF at any value of x, I just need to compute as stated
-    in the homework assignment.
-    Step 1:  unpack the args tuple into variables called: x, mu, stDev
-    Step 2:  compute GPDF value at x
-    Step 3:  return value
-    :param args: (x, mean, standard deviation)  tuple in that order
-    :return: value of GPDF at the desired x
-    """
-    # Step 1: unpack args
-    x, mu, sig = args
-    # step 2: compute GPDF at x
-    fx = (1 / (sig * sqrt(2 * pi))) * exp(-0.5 * ((x - mu) / sig) ** 2)
-    # step 3: return value
-    return fx
-
-def Simpson(fn, args, N=100):
-    """
-    This executes the Simpson 1/3 rule for numerical integration (see page 832, Table 19.4).
-    As I recall:
-    1. divide the range from x=lhl to x=rhl into an even number of parts. Perhaps 20?
-    2. compute fx at each x value between lhl and rhl
-    3. sum the even and odd values of fx as prescribed
-    4. return the area beneath the function fx
-    :param fx: some function of x to integrate
-    :param args: a tuple containing (mean, stDev, lhl, rhl)
-    :return: the area beneath the function between lhl and rhl
-    """
-    area = 0.5
-    return area
+from NumericalMethods import GaussSeidel
 
 def Secant(fcn, x0, x1, maxiter=10, xtol=1e-5):
     """
@@ -82,29 +27,38 @@ def GaussSeidel(Aaug, x, Niter = 15):
     pass
 
 def main():
-    '''
-    This is a function I created for testing the numerical methods locally.
-    :return: None
-    '''
-    #region testing GPDF
-    fx = GPDF((0,0,1))
-    print("{:0.5f}".format(fx))  # Does this match the expected value?
-    #edregion
+    print("run Gauss-Seidel solver:")
+    Aaug1 = [
+        [3, 1, -1, 2],
+        [1, 4, 1, 12],
+        [2, 1, 2, 10]
+    ]
 
-    #region testing Simpson
-    p=Simpson(GPDF,(0,1,-5,0)) # should return 0.5
-    print("p={:0.5f}".format(p))  # Does this match the expected value?
-    #endregion
+    Aaug2 = [
+        [1, -10, 2, 4, 2],
+        [3, 1, 4, 12, 12],
+        [9, 2, 3, 4, 21],
+        [-1, 2, 7, 3, 37]
+    ]
 
-    #region testing Probability
-    p1 = Probability(GPDF, (0,1),0,True)
-    print("p1={:0.5f}".format(p1))  # Does this match the expected value?
-    #endregion
-    pass
+    x0_3 = [0, 0, 0]
+    x0_4 = [0, 0, 0, 0]
+    Niter = 15
 
-#endregion
+    print("calling GaussSeidel for 1st system:")
+    solution1 = GaussSeidel(Aaug1, x0_3, Niter)
 
-#region function calls
-if __name__ == '__main__':
+    print("calling GaussSeidel for 2nd system:")
+    solution2 = GaussSeidel(Aaug2, x0_4, Niter)
+
+    print("\nSolution for 1st system 3x3:")
+    for i, val in enumerate(solution1):
+        print(f"x{i + 1}={val:.6f}")
+
+    print("\nSolution for 2nd system 4x4:")
+    for i, val in enumerate(solution2):
+        print(f"x{i + 1}={val:.6f}")
+
+
+if __name__ == "__main__":
     main()
-#endregion
