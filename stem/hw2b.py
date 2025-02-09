@@ -1,6 +1,6 @@
 #region imports
 from NumericalMethods import Secant
-#endregion
+#endregion #
 
 #region function definitions
 def fn1(x):

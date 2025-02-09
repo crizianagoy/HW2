@@ -1,4 +1,4 @@
-#region imports
+#region imports #
 import Gauss_Elim as GE  # this is the module from lecture 2 that has usefule matrix manipulation functions
 from math import sqrt, pi, exp, cos
 #endregion

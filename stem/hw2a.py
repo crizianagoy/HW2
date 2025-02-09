@@ -1,7 +1,7 @@
 #region imports
 from math import sqrt, pi, exp
 from NumericalMethods import GPDF, Simpson, Probability
-#endregion
+#endregion #
 
 #region function definitions
 def main():

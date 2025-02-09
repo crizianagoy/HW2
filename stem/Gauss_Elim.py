@@ -3,7 +3,7 @@
     # the elementary operations for Gauss elimination are
     # 1. Swap the positions of two rows (I'll use pop and insert)
     # 2. Multiply a row by a non-zero scalar
-    # 3. Add to one row, a scalar multiple of another row
+    # 3. Add to one row, a scalar multiple of another row #
 # endregion
 
 # region imports
