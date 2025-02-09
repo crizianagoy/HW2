@@ -29,7 +29,15 @@ def MakeDiagDom(A):
     :param A: The matrix to sort
     :return: The sorted matrix
     """
-    pass
+    n = len(A)
+    for i in range(n):
+        # find max abs value row
+        max_row = max(range(i, n), key=lambda r: abs(A[r][i]))
+        if abs(A[max_row][i]) < sum([abs(A[max_row][j]) for j in range(n) if j != i]):
+            print(f"warning: Row {max_row} doen't ensure diagonal dominance")
+        if max_row !=i:
+            A[i], A[max_row] = A[max_row], A[i]
+    return A
 
 # region row operations
 def SwapRows(A, r1, r2):  #if I do this, it is known as a partial pivot
@@ -103,7 +111,7 @@ def EchelonForm(A):
                 p=FirstNonZero_Index(Ech[r])
                 if p==i:  #found row p has a nonzero element in column i
                     Row=Ech[r]
-                    s=-Ech[r][p]/Ech[i][i]
+                    s=-float(Ech[r][p])/ float(Ech[i][i])
                     Ech[r] = AddRows(Row,Ech[i],s)
     return Ech
 
@@ -149,7 +157,7 @@ def AugmentMatrix(A,B):
     :param B: another matrix
     :return:
     '''
-    C=CP.deepcopy(A)
+    C= [list(row) for row in A] #convert each row of A into a mutable list
     for i in range(len(C)):
         C[i] += B[i]  #this is called concatonating a list
     return C
@@ -263,7 +271,7 @@ def main():
     #for solving [A][x]=[b]
     A=popColumn(M, len(M[0]) - 1) #remove last column of augmented matrix M
 
-    MI=InvertMatrix(A)
+    MI= InvertMatrix (A)
 
     print("Inverted Matrix")
     for r in MI:
